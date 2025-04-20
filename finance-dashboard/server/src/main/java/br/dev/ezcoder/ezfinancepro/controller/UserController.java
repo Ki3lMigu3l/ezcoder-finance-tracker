@@ -31,14 +31,14 @@ public class UserController {
         return ResponseEntity.created(location).body(userDtoConverter.toReponse(createdUser));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById (@PathVariable String id) {
-        return ResponseEntity.ok(userService.findUser(id));
-    }
-
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers () {
         return ResponseEntity.ok(userService.findAllUsers());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getUserById (@PathVariable String id) {
+        return ResponseEntity.ok(userService.findUser(id));
     }
 
     @PutMapping("/{id}")
