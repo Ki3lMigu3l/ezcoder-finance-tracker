@@ -1,4 +1,4 @@
-# 📅 Ezfinance Pro - Sistema de Gestão Financeira Pessoal
+# 📅 Ezfinance Pro - Dashboard de Finanças Pessoais
 
 [![Java](https://img.shields.io/badge/Java-17-%23ED8B00?logo=openjdk)](https://jdk.java.net/17/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-%236DB33F?logo=spring)](https://spring.io/projects/spring-boot)
