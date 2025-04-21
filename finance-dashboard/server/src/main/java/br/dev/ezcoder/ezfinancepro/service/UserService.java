@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +28,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public UserResponseDTO findUser(String id) {
+    public Optional<User> findUser(String id) {
         User userFound = userRepository.findUserById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
-
-        return entityToResponseDTO(userFound);
+        return Optional.ofNullable(userFound);
     }
 
     public List<UserResponseDTO> findAllUsers() {

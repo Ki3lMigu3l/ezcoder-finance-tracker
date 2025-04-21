@@ -1,20 +1,22 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
+import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.entity.Category;
 import br.dev.ezcoder.ezfinancepro.model.entity.Transaction;
-import br.dev.ezcoder.ezfinancepro.model.enums.CategoryType;
+import br.dev.ezcoder.ezfinancepro.model.entity.User;
+import br.dev.ezcoder.ezfinancepro.service.CategoryService;
 import br.dev.ezcoder.ezfinancepro.service.TransactionService;
 import br.dev.ezcoder.ezfinancepro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/transaction")
@@ -23,20 +25,35 @@ public class TransactionController {
 
     private final TransactionService transactionService;
     private final UserService userService;
+    private final CategoryService categoryService;
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction (@RequestBody @Valid TransactionRequestDTO request) {
-        Category category = new Category(
-                "1234",
-                "68055b0993849e00269d04f7",
-                "Alimentação",
-                CategoryType.EXPENSE);
+        User userFound = userService.findUser(request.userId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
 
-        Transaction transaction = new Transaction();
+        Category category = new Category();
+        if (request.category() != null) {
+            Category newCategory = new Category();
+            newCategory.setUserId(request.userId());
+            newCategory.setName(request.category().name());
+            newCategory.setIcon(request.category().icon());
+            newCategory.setColorHex(request.category().colorHex());
+            newCategory.setType(request.category().type());
+            newCategory.setDefault(request.category().isDefault());
 
+            category = categoryService.create(newCategory);
+        }
+
+        Transaction transaction = new Transaction(request);
         transaction.setCategory(category);
-        BeanUtils.copyProperties(request, transaction);
-        return ResponseEntity.status(HttpStatus.OK).body(transactionService.create(transaction));
+        Transaction createdTransaction = transactionService.create(transaction);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Transaction>> getAllTransactions () {
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -45,11 +62,6 @@ public class TransactionController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
         return ResponseEntity.status(HttpStatus.OK).body(transactionFound);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Transaction>> getAllTransactions () {
-        return ResponseEntity.status(HttpStatus.OK).body(transactionService.findAll());
     }
 
     @PutMapping("/{id}")

@@ -1,5 +1,7 @@
 package br.dev.ezcoder.ezfinancepro.model.dto.request;
 
+import br.dev.ezcoder.ezfinancepro.model.entity.Category;
+import br.dev.ezcoder.ezfinancepro.model.enums.PaymentMethod;
 import br.dev.ezcoder.ezfinancepro.model.enums.TransactionType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +16,11 @@ public record TransactionRequestDTO(
         @NotNull LocalDate date,
         String description,
         String notes,
-        @NotNull TransactionType type
+        @NotNull TransactionType type,
+        CategoryRequestDTO category,
+        boolean isRecurring,
+        boolean isCreditCard,
+        String cardInvoiceId,
+        PaymentMethod paymentMethod
         ) {
 }

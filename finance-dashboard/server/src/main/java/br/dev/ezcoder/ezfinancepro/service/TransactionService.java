@@ -31,6 +31,6 @@ public class TransactionService {
     }
 
     public void deleteTransactionById(String id) {
-
+        transactionRepository.deleteById(id);
     }
 }
