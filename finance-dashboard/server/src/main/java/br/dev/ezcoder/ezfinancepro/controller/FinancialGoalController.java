@@ -26,8 +26,7 @@ public class FinancialGoalController {
 
     @PostMapping
     public ResponseEntity<FinancialGoal> registrerBankAccount (@RequestBody @Valid FinancialGoal request) {
-        User userFound = userService.findUserById(request.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+        User userFound = userService.findUserById(request.getUserId());
 
         var bankAccount = new FinancialGoal();
         BeanUtils.copyProperties(request, bankAccount);
@@ -38,12 +37,12 @@ public class FinancialGoalController {
 
     @GetMapping
     public ResponseEntity<List<FinancialGoal>> getAllCategories () {
-        return ResponseEntity.status(HttpStatus.OK).body(financialGoalService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(financialGoalService.findAllFinancialGoal());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FinancialGoal> getCategory (@PathVariable String id) {
-        FinancialGoal financialGoalFound = financialGoalService.findById(id)
+        FinancialGoal financialGoalFound = financialGoalService.findFinancialGoalById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
 
         return ResponseEntity.status(HttpStatus.OK).body(financialGoalFound);
@@ -53,21 +52,21 @@ public class FinancialGoalController {
     public ResponseEntity<FinancialGoal> updateTransaction (@PathVariable String id,
                                                           @RequestBody @Valid FinancialGoal request) {
 
-        FinancialGoal financialGoalFound = financialGoalService.findById(id)
+        FinancialGoal financialGoalFound = financialGoalService.findFinancialGoalById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
 
         request.setId(financialGoalFound.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(financialGoalService.update(request));
+        return ResponseEntity.status(HttpStatus.OK).body(financialGoalService.updateFinancialGoal(request));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTransaction (@PathVariable String id) {
 
-        FinancialGoal financialGoalFound = financialGoalService.findById(id)
+        FinancialGoal financialGoalFound = financialGoalService.findFinancialGoalById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
 
-        financialGoalService.delete(id);
+        financialGoalService.deleteFinancialGoal(id);
     }
 
     private URI buildFinancialGoalUri (String financialGoalId) {

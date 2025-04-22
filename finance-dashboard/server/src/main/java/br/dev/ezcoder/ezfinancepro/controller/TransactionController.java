@@ -29,8 +29,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction (@RequestBody @Valid TransactionRequestDTO request) {
-        User userFound = userService.findUserById(request.userId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+        User userFound = userService.findUserById(request.userId());
 
         Category category = new Category();
         if (request.category() != null) {
@@ -42,12 +41,12 @@ public class TransactionController {
             newCategory.setType(request.category().type());
             newCategory.setDefault(request.category().isDefault());
 
-            category = categoryService.create(newCategory);
+            category = categoryService.registerCategory(newCategory);
         }
 
         Transaction transaction = new Transaction(request);
         transaction.setCategory(category);
-        Transaction createdTransaction = transactionService.create(transaction);
+        Transaction createdTransaction = transactionService.registerTransaction(transaction);
 
         URI location = buildTransactionUri(createdTransaction.getId());
         return ResponseEntity.created(location).body(createdTransaction);
@@ -75,7 +74,7 @@ public class TransactionController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
         transaction.setId(transactionFound.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(transactionService.update(transaction));
+        return ResponseEntity.status(HttpStatus.OK).body(transactionService.updateTransactionById(transaction));
     }
 
     @DeleteMapping("/{id}")

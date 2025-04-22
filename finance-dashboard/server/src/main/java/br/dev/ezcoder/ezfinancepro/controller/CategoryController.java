@@ -24,16 +24,14 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<Category> createCategory (@RequestBody @Valid CategoryRequestDTO request)  {
-        User userFound = userService.findUserById(request.userId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
-
+        User userFound = userService.findUserById(request.userId());
         Category createdCategory = new Category(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.create(createdCategory));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.registerCategory(createdCategory));
     }
 
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories () {
-        return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAllCategories());
     }
 
     @GetMapping("/{id}")
@@ -52,7 +50,7 @@ public class CategoryController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
         request.setId(categoryFound.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(categoryService.update(request));
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.updateCategory(request));
     }
 
     @DeleteMapping("/{id}")
@@ -62,6 +60,6 @@ public class CategoryController {
         Category transactionFound = categoryService.findCategoryById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
-        categoryService.delete(id);
+        categoryService.deleteCategoryById(id);
     }
 }

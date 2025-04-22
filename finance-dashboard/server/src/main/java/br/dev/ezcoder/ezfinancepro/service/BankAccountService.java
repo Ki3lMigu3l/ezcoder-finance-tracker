@@ -15,23 +15,23 @@ public class BankAccountService {
 
     private final BankAccountRepository bankAccountRepository;
 
-    public BankAccount registrer(BankAccount bankAccount) {
+    public BankAccount registrerBankAccount(BankAccount bankAccount) {
         return bankAccountRepository.save(bankAccount);
     }
 
-    public List<BankAccount> findAll() {
+    public List<BankAccount> findAllBankAccount() {
         return bankAccountRepository.findAll();
     }
 
-    public Optional<BankAccount> findById(String id) {
+    public Optional<BankAccount> findBankAccountById(String id) {
         return bankAccountRepository.findById(id);
     }
 
-    public BankAccount update(@Valid BankAccount request) {
+    public BankAccount updateBankAccount(@Valid BankAccount request) {
         return bankAccountRepository.save(request);
     }
 
-    public void delete(String id) {
+    public void deleteBankAccount(String id) {
         bankAccountRepository.deleteById(id);
     }
 }

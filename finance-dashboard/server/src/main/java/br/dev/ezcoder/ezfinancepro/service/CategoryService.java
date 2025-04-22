@@ -14,11 +14,11 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public Category create(Category request) {
+    public Category registerCategory(Category request) {
         return categoryRepository.save(new Category(request));
     }
 
-    public List<Category> findAll() {
+    public List<Category> findAllCategories() {
         return categoryRepository.findAll();
     }
 
@@ -26,11 +26,11 @@ public class CategoryService {
         return categoryRepository.findById(id);
     }
 
-    public Category update(Category request) {
+    public Category updateCategory(Category request) {
         return categoryRepository.save(request);
     }
 
-    public void delete(String id) {
+    public void deleteCategoryById(String id) {
         categoryRepository.deleteById(id);
     }
 

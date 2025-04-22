@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -27,7 +26,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser (@RequestBody @Valid UserRequestDTO request) {
-        User createdUser = userService.create(request);
+        User createdUser = userService.registerUser(request);
         URI location = buildUserUri(createdUser.getId());
         return ResponseEntity.created(location).body(userDtoConverter.toReponse(createdUser));
     }
@@ -39,7 +38,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById (@PathVariable String id) {
-        User userFound = userService.findUserById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+        User userFound = userService.findUserById(id);
         return ResponseEntity.ok(userDtoConverter.toReponse(userFound));
     }
 
@@ -51,9 +50,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser (@PathVariable String id) {
-        User userFound = userService.findUserById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
-
+        User userFound = userService.findUserById(id);
         userService.deleteUserById(id);
     }
 

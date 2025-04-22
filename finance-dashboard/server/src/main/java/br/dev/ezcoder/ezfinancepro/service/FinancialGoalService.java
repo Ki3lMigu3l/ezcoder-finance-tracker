@@ -19,19 +19,19 @@ public class FinancialGoalService {
         return financialGoalRepository.save(bankAccount);
     }
 
-    public List<FinancialGoal> findAll() {
+    public List<FinancialGoal> findAllFinancialGoal() {
         return financialGoalRepository.findAll();
     }
 
-    public Optional<FinancialGoal> findById(String id) {
+    public Optional<FinancialGoal> findFinancialGoalById(String id) {
         return financialGoalRepository.findById(id);
     }
 
-    public FinancialGoal update(@Valid FinancialGoal request) {
+    public FinancialGoal updateFinancialGoal(@Valid FinancialGoal request) {
         return financialGoalRepository.save(request);
     }
 
-    public void delete(String id) {
+    public void deleteFinancialGoal(String id) {
         financialGoalRepository.deleteById(id);
     }
 }

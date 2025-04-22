@@ -24,22 +24,22 @@ public class BankAccountController {
 
     @PostMapping
     public ResponseEntity<BankAccount> registrerBankAccount (@RequestBody BankAccount request) {
-        User userFound = userService.findUserById(request.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+        User userFound = userService.findUserById(request.getUserId());
 
         var bankAccount = new BankAccount();
         BeanUtils.copyProperties(request, bankAccount);
-        return ResponseEntity.status(HttpStatus.CREATED).body(bankAccountService.registrer(bankAccount));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(bankAccountService.registrerBankAccount(bankAccount));
     }
 
     @GetMapping
     public ResponseEntity<List<BankAccount>> getAllBankAccounts () {
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.findAll());
+        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.findAllBankAccount());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BankAccount> getBankAccount (@PathVariable String id) {
-        BankAccount bankAccountFound = bankAccountService.findById(id)
+        BankAccount bankAccountFound = bankAccountService.findBankAccountById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
 
         return ResponseEntity.status(HttpStatus.OK).body(bankAccountFound);
@@ -49,20 +49,20 @@ public class BankAccountController {
     public ResponseEntity<BankAccount> updateBankAccount (@PathVariable String id,
                                                        @RequestBody @Valid BankAccount request) {
 
-        BankAccount bankAccountFound = bankAccountService.findById(id)
+        BankAccount bankAccountFound = bankAccountService.findBankAccountById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
 
         request.setId(bankAccountFound.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.update(request));
+        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.updateBankAccount(request));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBankAccount (@PathVariable String id) {
 
-        BankAccount bankAccountFound = bankAccountService.findById(id)
+        BankAccount bankAccountFound = bankAccountService.findBankAccountById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
 
-        bankAccountService.delete(id);
+        bankAccountService.deleteBankAccount(id);
     }
 }

@@ -14,7 +14,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
 
-    public Transaction create(Transaction transaction) {
+    public Transaction registerTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
     }
 
@@ -26,7 +26,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public Transaction update(Transaction transactionFound) {
+    public Transaction updateTransactionById(Transaction transactionFound) {
         return transactionRepository.save(transactionFound);
     }
 

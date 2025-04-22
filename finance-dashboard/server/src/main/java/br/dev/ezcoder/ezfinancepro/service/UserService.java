@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,15 +21,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User create (@Valid UserRequestDTO userRequestDTO) {
-        User user = new User(userRequestDTO);
-        return userRepository.save(user);
+    public User registerUser (@Valid UserRequestDTO userRequestDTO) {
+        return userRepository.save(new User(userRequestDTO));
     }
 
-    public Optional<User> findUserById(String id) {
-        User userFound = userRepository.findUserById(id)
+    public User findUserById(String id) {
+        User userFound = userRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
-        return Optional.ofNullable(userFound);
+
+        return userFound;
     }
 
     public List<UserResponseDTO> findAllUsers() {
@@ -38,7 +37,7 @@ public class UserService {
     }
 
     public User updateUser (String userId, @Valid UserRequestDTO userUpdateDTO) {
-        User userFound = userRepository.findUserById(userId)
+        User userFound = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
 
         BeanUtils.copyProperties(userUpdateDTO, userFound);
