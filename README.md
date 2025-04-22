@@ -13,7 +13,7 @@ O objetivo deste projeto é desenvolver uma solução completa para o gerenciame
 
 <hr>
 
-<div align="center"><h3>🚀 STACK </h3></div>
+<div align="center"><h3> 🚀 Stack do Projeto</h3></div>
 
 <div align="center">
   
