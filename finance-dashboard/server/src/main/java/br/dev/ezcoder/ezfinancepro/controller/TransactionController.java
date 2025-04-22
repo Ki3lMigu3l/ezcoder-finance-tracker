@@ -1,6 +1,5 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
-import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.entity.Category;
 import br.dev.ezcoder.ezfinancepro.model.entity.Transaction;
