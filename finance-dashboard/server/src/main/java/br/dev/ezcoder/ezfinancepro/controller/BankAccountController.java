@@ -27,12 +27,12 @@ public class BankAccountController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BankAccount>> getAllCategories () {
+    public ResponseEntity<List<BankAccount>> getAllBankAccounts () {
         return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BankAccount> getCategory (@PathVariable String id) {
+    public ResponseEntity<BankAccount> getBankAccount (@PathVariable String id) {
         BankAccount bankAccountFound = bankAccountService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
 
@@ -40,7 +40,7 @@ public class BankAccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BankAccount> updateTransaction (@PathVariable String id,
+    public ResponseEntity<BankAccount> updateBankAccount (@PathVariable String id,
                                                        @RequestBody @Valid BankAccount request) {
 
         BankAccount bankAccountFound = bankAccountService.findById(id)
@@ -52,7 +52,7 @@ public class BankAccountController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTransaction (@PathVariable String id) {
+    public void deleteBankAccount (@PathVariable String id) {
 
         BankAccount bankAccountFound = bankAccountService.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
