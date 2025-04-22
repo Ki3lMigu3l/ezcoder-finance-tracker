@@ -7,9 +7,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,54 +16,53 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Document(collection = "transactions")
 public class Transaction {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @NotBlank
-    private String userId;
+  @NotBlank
+  private String userId;
 
-    @NotNull
-    @PositiveOrZero
-    private BigDecimal amount;
+  @NotNull
+  @PositiveOrZero
+  private BigDecimal amount;
 
-    @NotNull
-    private LocalDate date;
+  @NotNull
+  private LocalDate date;
 
-    private String description;
+  private String description;
 
-    private String notes;
+  private String notes;
 
-    @NotNull
-    private TransactionType type;
+  @NotNull
+  private TransactionType type;
 
-    @DBRef
-    private Category category;
+  @DBRef
+  private Category category;
 
-    private boolean isRecurring;
+  private boolean isRecurring;
 
-    private boolean isCreditCard;
+  private boolean isCreditCard;
 
-    private String cardInvoiceId;
+  private String cardInvoiceId;
 
-    @NotNull
-    private PaymentMethod paymentMethod;
+  @NotNull
+  private PaymentMethod paymentMethod;
 
-    public Transaction(@Valid TransactionRequestDTO request) {
-        this.userId = request.userId();
-        this.amount = request.amount();
-        this.date = request.date();
-        this.description = request.description();
-        this.notes = request.notes();
-        this.type = request.type();
-        this.isRecurring = request.isRecurring();
-        this.isCreditCard = request.isCreditCard();
-        this.cardInvoiceId = request.cardInvoiceId();
-        this.paymentMethod = request.paymentMethod();
-    }
+  public Transaction(@Valid TransactionRequestDTO request) {
+    this.userId = request.userId();
+    this.amount = request.amount();
+    this.date = request.date();
+    this.description = request.description();
+    this.notes = request.notes();
+    this.type = request.type();
+    this.isRecurring = request.isRecurring();
+    this.isCreditCard = request.isCreditCard();
+    this.cardInvoiceId = request.cardInvoiceId();
+    this.paymentMethod = request.paymentMethod();
+  }
 }

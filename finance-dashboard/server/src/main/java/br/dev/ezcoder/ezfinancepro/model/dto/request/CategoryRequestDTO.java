@@ -4,11 +4,10 @@ import br.dev.ezcoder.ezfinancepro.model.enums.CategoryType;
 import jakarta.validation.constraints.NotBlank;
 
 public record CategoryRequestDTO(
-        @NotBlank String userId,
-        @NotBlank String name,
-        String icon,
-        String colorHex,
-        CategoryType type,
-        boolean isDefault
-) {
-}
+  @NotBlank String userId,
+  @NotBlank String name,
+  String icon,
+  String colorHex,
+  CategoryType type,
+  boolean isDefault
+) {}

@@ -1,7 +1,9 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
 import br.dev.ezcoder.ezfinancepro.model.entity.BankAccount;
+import br.dev.ezcoder.ezfinancepro.model.entity.User;
 import br.dev.ezcoder.ezfinancepro.service.BankAccountService;
+import br.dev.ezcoder.ezfinancepro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -18,9 +20,13 @@ import java.util.List;
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<BankAccount> registrerBankAccount (@RequestBody BankAccount request) {
+        User userFound = userService.findUserById(request.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+
         var bankAccount = new BankAccount();
         BeanUtils.copyProperties(request, bankAccount);
         return ResponseEntity.status(HttpStatus.CREATED).body(bankAccountService.registrer(bankAccount));

@@ -1,6 +1,5 @@
 package br.dev.ezcoder.ezfinancepro.service;
 
-import br.dev.ezcoder.ezfinancepro.model.converter.UserDtoConverter;
 import br.dev.ezcoder.ezfinancepro.model.dto.request.UserRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.dto.response.UserResponseDTO;
 import br.dev.ezcoder.ezfinancepro.model.entity.User;
@@ -28,7 +27,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findUser(String id) {
+    public Optional<User> findUserById(String id) {
         User userFound = userRepository.findUserById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
         return Optional.ofNullable(userFound);
@@ -47,7 +46,7 @@ public class UserService {
         return userRepository.save(userFound);
     }
 
-    public void deleteUser (String id) {
+    public void deleteUserById(String id) {
         userRepository.deleteById(id);
     }
 

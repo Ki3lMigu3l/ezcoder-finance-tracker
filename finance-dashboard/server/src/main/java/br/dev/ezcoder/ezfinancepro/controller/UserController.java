@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById (@PathVariable String id) {
-        User userFound = userService.findUser(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+        User userFound = userService.findUserById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
         return ResponseEntity.ok(userDtoConverter.toReponse(userFound));
     }
 
@@ -51,7 +51,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser (@PathVariable String id) {
-        userService.deleteUser(id);
+        User userFound = userService.findUserById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+
+        userService.deleteUserById(id);
     }
 
     private URI buildUserUri(String userId) {

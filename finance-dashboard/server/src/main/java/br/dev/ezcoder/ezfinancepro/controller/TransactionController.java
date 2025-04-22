@@ -13,9 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/transaction")
@@ -28,7 +29,7 @@ public class TransactionController {
 
     @PostMapping
     public ResponseEntity<Transaction> createTransaction (@RequestBody @Valid TransactionRequestDTO request) {
-        User userFound = userService.findUser(request.userId())
+        User userFound = userService.findUserById(request.userId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
 
         Category category = new Category();
@@ -47,17 +48,20 @@ public class TransactionController {
         Transaction transaction = new Transaction(request);
         transaction.setCategory(category);
         Transaction createdTransaction = transactionService.create(transaction);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
+
+        URI location = buildTransactionUri(createdTransaction.getId());
+        return ResponseEntity.created(location).body(createdTransaction);
     }
 
     @GetMapping
     public ResponseEntity<List<Transaction>> getAllTransactions () {
-        return ResponseEntity.status(HttpStatus.OK).body(transactionService.findAll());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(transactionService.findAllTransactions());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Transaction> getTransaction (@PathVariable String id) {
-        Transaction transactionFound = transactionService.findById(id)
+        Transaction transactionFound = transactionService.findTransactionById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
         return ResponseEntity.status(HttpStatus.OK).body(transactionFound);
@@ -67,7 +71,7 @@ public class TransactionController {
     public ResponseEntity<Transaction> updateTransaction (@PathVariable String id,
                                                           @RequestBody @Valid Transaction transaction) {
 
-        Transaction transactionFound = transactionService.findById(id)
+        Transaction transactionFound = transactionService.findTransactionById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
         transaction.setId(transactionFound.getId());
@@ -78,9 +82,17 @@ public class TransactionController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTransaction (@PathVariable String id) {
 
-        Transaction transactionFound = transactionService.findById(id)
+        Transaction transactionFound = transactionService.findTransactionById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Transaction Not found!"));
 
         transactionService.deleteTransactionById(id);
+    }
+
+    private URI buildTransactionUri(String transactionId) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(transactionId)
+                .toUri();
     }
 }

@@ -2,7 +2,9 @@ package br.dev.ezcoder.ezfinancepro.controller;
 
 import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.entity.Category;
+import br.dev.ezcoder.ezfinancepro.model.entity.User;
 import br.dev.ezcoder.ezfinancepro.service.CategoryService;
+import br.dev.ezcoder.ezfinancepro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,9 +20,13 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<Category> createCategory (@RequestBody @Valid CategoryRequestDTO request)  {
+        User userFound = userService.findUserById(request.userId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+
         Category createdCategory = new Category(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.create(createdCategory));
     }

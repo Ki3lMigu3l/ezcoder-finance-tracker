@@ -18,11 +18,11 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public Optional<Transaction> findById(String id) {
+    public Optional<Transaction> findTransactionById(String id) {
         return transactionRepository.findById(id);
     }
 
-    public List<Transaction> findAll() {
+    public List<Transaction> findAllTransactions() {
         return transactionRepository.findAll();
     }
 

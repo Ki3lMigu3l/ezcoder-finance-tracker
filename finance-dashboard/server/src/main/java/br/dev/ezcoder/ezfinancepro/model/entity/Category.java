@@ -4,51 +4,49 @@ import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequestDTO;
 import br.dev.ezcoder.ezfinancepro.model.enums.CategoryType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Document(collection = "categories")
 public class Category {
 
-    @Id
-    private String id;
+  @Id
+  private String id;
 
-    @NotBlank
-    private String userId;
+  @NotBlank
+  private String userId;
 
-    @NotBlank
-    private String name;
+  @NotBlank
+  private String name;
 
-    private String icon;
+  private String icon;
 
-    private String colorHex;
+  private String colorHex;
 
-    @NotNull
-    private CategoryType type;
+  @NotNull
+  private CategoryType type;
 
-    private boolean isDefault;
+  private boolean isDefault;
 
-    public Category(Category category) {
-        this.userId = category.getUserId();
-        this.name = category.getName();
-        this.icon = category.getIcon();
-        this.colorHex = category.getColorHex();
-        this.type = category.getType();
-        this.isDefault = category.isDefault();
-    }
+  public Category(Category category) {
+    this.userId = category.getUserId();
+    this.name = category.getName();
+    this.icon = category.getIcon();
+    this.colorHex = category.getColorHex();
+    this.type = category.getType();
+    this.isDefault = category.isDefault();
+  }
 
-    public Category(CategoryRequestDTO request) {
-        this.userId = request.userId();
-        this.name = request.name();
-        this.icon = request.icon();
-        this.colorHex = request.colorHex();
-        this.type = request.type();
-        this.isDefault = request.isDefault();
-    }
+  public Category(CategoryRequestDTO request) {
+    this.userId = request.userId();
+    this.name = request.name();
+    this.icon = request.icon();
+    this.colorHex = request.colorHex();
+    this.type = request.type();
+    this.isDefault = request.isDefault();
+  }
 }

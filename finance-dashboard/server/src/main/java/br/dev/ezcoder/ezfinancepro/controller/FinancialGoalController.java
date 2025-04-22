@@ -1,7 +1,9 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
 import br.dev.ezcoder.ezfinancepro.model.entity.FinancialGoal;
+import br.dev.ezcoder.ezfinancepro.model.entity.User;
 import br.dev.ezcoder.ezfinancepro.service.FinancialGoalService;
+import br.dev.ezcoder.ezfinancepro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -9,21 +11,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/financial/goal")
+@RequestMapping("/api/v1/financialgoal")
 @RequiredArgsConstructor
 public class FinancialGoalController {
 
     private final FinancialGoalService financialGoalService;
+    private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<FinancialGoal> registrerBankAccount (@RequestBody FinancialGoal request) {
+    public ResponseEntity<FinancialGoal> registrerBankAccount (@RequestBody @Valid FinancialGoal request) {
+        User userFound = userService.findUserById(request.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+
         var bankAccount = new FinancialGoal();
         BeanUtils.copyProperties(request, bankAccount);
-        return ResponseEntity.status(HttpStatus.CREATED).body(financialGoalService.createGoal(bankAccount));
+
+        URI location = buildFinancialGoalUri(bankAccount.getId());
+        return ResponseEntity.created(location).body(financialGoalService.createGoal(bankAccount));
     }
 
     @GetMapping
@@ -58,5 +68,13 @@ public class FinancialGoalController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
 
         financialGoalService.delete(id);
+    }
+
+    private URI buildFinancialGoalUri (String financialGoalId) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(financialGoalId)
+                .toUri();
     }
 }
