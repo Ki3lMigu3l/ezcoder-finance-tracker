@@ -1,11 +1,11 @@
 package br.dev.ezcoder.ezfinancepro.model.dto.response;
 
-import br.dev.ezcoder.ezfinancepro.model.entity.User;
+import br.dev.ezcoder.ezfinancepro.model.entity.UserModel;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record UserResponseDTO(
+public record UserResponse(
   @NotBlank String id,
   @NotBlank String email,
   @NotBlank String password,
@@ -17,8 +17,8 @@ public record UserResponseDTO(
   LocalDateTime createdAt,
   LocalDateTime updatedAt
 ) {
-  public static UserResponseDTO entityToResponse(User user) {
-    return new UserResponseDTO(
+  public static UserResponse entityToResponse(UserModel user) {
+    return new UserResponse(
       user.getId(),
       user.getEmail(),
       user.getPassword(),

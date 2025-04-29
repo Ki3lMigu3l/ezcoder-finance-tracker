@@ -1,36 +1,17 @@
 package br.dev.ezcoder.ezfinancepro.service;
 
+import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.response.TransactionResponse;
+import br.dev.ezcoder.ezfinancepro.model.entity.Category;
 import br.dev.ezcoder.ezfinancepro.model.entity.Transaction;
-import br.dev.ezcoder.ezfinancepro.repositories.TransactionRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-public class TransactionService {
+public interface TransactionService {
 
-    private final TransactionRepository transactionRepository;
-
-    public Transaction registerTransaction(Transaction transaction) {
-        return transactionRepository.save(transaction);
-    }
-
-    public Optional<Transaction> findTransactionById(String id) {
-        return transactionRepository.findById(id);
-    }
-
-    public List<Transaction> findAllTransactions() {
-        return transactionRepository.findAll();
-    }
-
-    public Transaction updateTransactionById(Transaction transactionFound) {
-        return transactionRepository.save(transactionFound);
-    }
-
-    public void deleteTransactionById(String id) {
-        transactionRepository.deleteById(id);
-    }
+    List<TransactionResponse> findAllTransactions();
+    Transaction findTransactionById(String id);
+    Transaction updateTransaction (String id, TransactionRequest request);
+    void deleteTransaction (String id);
+    Transaction registerTransaction(Category category, Transaction transaction);
 }

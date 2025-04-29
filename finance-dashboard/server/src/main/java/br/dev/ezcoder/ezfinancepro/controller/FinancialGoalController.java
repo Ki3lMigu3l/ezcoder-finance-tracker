@@ -1,23 +1,23 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
+import br.dev.ezcoder.ezfinancepro.model.dto.request.FinancialGoalRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.response.FinancialGoalResponse;
 import br.dev.ezcoder.ezfinancepro.model.entity.FinancialGoal;
-import br.dev.ezcoder.ezfinancepro.model.entity.User;
+import br.dev.ezcoder.ezfinancepro.model.entity.UserModel;
 import br.dev.ezcoder.ezfinancepro.service.FinancialGoalService;
 import br.dev.ezcoder.ezfinancepro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/financialgoal")
+@RequestMapping("/api/goal")
 @RequiredArgsConstructor
 public class FinancialGoalController {
 
@@ -25,47 +25,38 @@ public class FinancialGoalController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<FinancialGoal> registrerBankAccount (@RequestBody @Valid FinancialGoal request) {
-        User userFound = userService.findUserById(request.getUserId());
+    public ResponseEntity<FinancialGoalResponse> createFinancialGoal(@RequestBody @Valid FinancialGoalRequest request) {
+        UserModel userFound = userService.findUserById(request.userId());
 
-        var bankAccount = new FinancialGoal();
-        BeanUtils.copyProperties(request, bankAccount);
+        FinancialGoal financialGoal = financialGoalService.createGoal(request);
+        URI location = buildFinancialGoalUri(financialGoal.getId());
 
-        URI location = buildFinancialGoalUri(bankAccount.getId());
-        return ResponseEntity.created(location).body(financialGoalService.createGoal(bankAccount));
+        return ResponseEntity
+                .created(location)
+                .body(FinancialGoalResponse.entityToResponse(financialGoal));
     }
 
     @GetMapping
-    public ResponseEntity<List<FinancialGoal>> getAllCategories () {
-        return ResponseEntity.status(HttpStatus.OK).body(financialGoalService.findAllFinancialGoal());
+    public ResponseEntity<List<FinancialGoalResponse>> getAllGoals () {
+        return ResponseEntity.ok(financialGoalService.findAllFinancialGoal());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FinancialGoal> getCategory (@PathVariable String id) {
-        FinancialGoal financialGoalFound = financialGoalService.findFinancialGoalById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
-
-        return ResponseEntity.status(HttpStatus.OK).body(financialGoalFound);
+    public ResponseEntity<FinancialGoalResponse> getFinancialGoal (@PathVariable String id) {
+        return ResponseEntity.ok(FinancialGoalResponse.entityToResponse(financialGoalService.findFinancialGoal(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FinancialGoal> updateTransaction (@PathVariable String id,
-                                                          @RequestBody @Valid FinancialGoal request) {
-
-        FinancialGoal financialGoalFound = financialGoalService.findFinancialGoalById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
-
-        request.setId(financialGoalFound.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(financialGoalService.updateFinancialGoal(request));
+    public ResponseEntity<FinancialGoalResponse> updateTransaction (@PathVariable String id,
+                                                                    @RequestBody @Valid FinancialGoalRequest request) {
+        return ResponseEntity
+                .ok(FinancialGoalResponse
+                        .entityToResponse(financialGoalService.updateFinancialGoal(id, request)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTransaction (@PathVariable String id) {
-
-        FinancialGoal financialGoalFound = financialGoalService.findFinancialGoalById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Financial Goal not found!"));
-
+    public void deleteFinancialGoal (@PathVariable String id) {
         financialGoalService.deleteFinancialGoal(id);
     }
 

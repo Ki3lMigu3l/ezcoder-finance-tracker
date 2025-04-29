@@ -1,10 +1,7 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
-import br.dev.ezcoder.ezfinancepro.model.converter.UserDtoConverter;
-import br.dev.ezcoder.ezfinancepro.model.dto.request.UserRequestDTO;
-import br.dev.ezcoder.ezfinancepro.model.dto.response.UserResponseDTO;
-import br.dev.ezcoder.ezfinancepro.model.dto.response.UserResponseUpdateDTO;
-import br.dev.ezcoder.ezfinancepro.model.entity.User;
+import br.dev.ezcoder.ezfinancepro.model.dto.request.UserCreateRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.response.UserResponse;
 import br.dev.ezcoder.ezfinancepro.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,40 +14,30 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final UserDtoConverter userDtoConverter;
-
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser (@RequestBody @Valid UserRequestDTO request) {
-        User createdUser = userService.registerUser(request);
-        URI location = buildUserUri(createdUser.getId());
-        return ResponseEntity.created(location).body(userDtoConverter.toReponse(createdUser));
-    }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers () {
+    public ResponseEntity<List<UserResponse>> getAllUsers () {
         return ResponseEntity.ok(userService.findAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById (@PathVariable String id) {
-        User userFound = userService.findUserById(id);
-        return ResponseEntity.ok(userDtoConverter.toReponse(userFound));
+    public ResponseEntity<UserResponse> getUser (@PathVariable String id) {
+        return ResponseEntity.ok(UserResponse.entityToResponse(userService.findUserById(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseUpdateDTO> updateUser (@PathVariable String id, @RequestBody @Valid UserRequestDTO request) {
-        return ResponseEntity.ok(userDtoConverter.toUpdateResponse(userService.updateUser(id, request)));
+    public ResponseEntity<UserResponse> updateUser (@PathVariable String id, @RequestBody @Valid UserCreateRequest request) {
+        return ResponseEntity.ok(UserResponse.entityToResponse(userService.updateUser(id, request)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser (@PathVariable String id) {
-        User userFound = userService.findUserById(id);
         userService.deleteUserById(id);
     }
 

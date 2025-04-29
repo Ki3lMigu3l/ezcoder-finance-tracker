@@ -3,7 +3,7 @@ package br.dev.ezcoder.ezfinancepro.model.dto.request;
 import br.dev.ezcoder.ezfinancepro.model.enums.CategoryType;
 import jakarta.validation.constraints.NotBlank;
 
-public record CategoryRequestDTO(
+public record CategoryRequest(
   @NotBlank String userId,
   @NotBlank String name,
   String icon,

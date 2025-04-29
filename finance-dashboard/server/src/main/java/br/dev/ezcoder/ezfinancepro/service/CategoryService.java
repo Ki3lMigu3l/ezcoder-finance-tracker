@@ -1,37 +1,18 @@
 package br.dev.ezcoder.ezfinancepro.service;
 
+import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.response.CategoryResponse;
 import br.dev.ezcoder.ezfinancepro.model.entity.Category;
-import br.dev.ezcoder.ezfinancepro.repositories.CategoryRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-@RequiredArgsConstructor
-public class CategoryService {
+public interface CategoryService {
 
-    private final CategoryRepository categoryRepository;
-
-    public Category registerCategory(Category request) {
-        return categoryRepository.save(new Category(request));
-    }
-
-    public List<Category> findAllCategories() {
-        return categoryRepository.findAll();
-    }
-
-    public Optional<Category> findCategoryById(String id) {
-        return categoryRepository.findById(id);
-    }
-
-    public Category updateCategory(Category request) {
-        return categoryRepository.save(request);
-    }
-
-    public void deleteCategoryById(String id) {
-        categoryRepository.deleteById(id);
-    }
-
+    Category registerCategory (TransactionRequest request);
+    Category registerCategory(CategoryRequest request);
+    List<CategoryResponse> findAllCategories ();
+    Category findCategory (String id);
+    Category updateCategory (String id, CategoryRequest request);
+    void deleteCategory (String id);
 }

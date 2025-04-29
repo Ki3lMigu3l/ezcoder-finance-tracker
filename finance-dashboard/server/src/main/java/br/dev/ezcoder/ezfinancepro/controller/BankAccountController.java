@@ -1,68 +1,69 @@
 package br.dev.ezcoder.ezfinancepro.controller;
 
+import br.dev.ezcoder.ezfinancepro.model.dto.request.BankAccountRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.response.BankAccountResponse;
 import br.dev.ezcoder.ezfinancepro.model.entity.BankAccount;
-import br.dev.ezcoder.ezfinancepro.model.entity.User;
+import br.dev.ezcoder.ezfinancepro.model.entity.UserModel;
 import br.dev.ezcoder.ezfinancepro.service.BankAccountService;
-import br.dev.ezcoder.ezfinancepro.service.UserService;
+import br.dev.ezcoder.ezfinancepro.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/bankaccount")
+@RequestMapping("/api/bank-accounts")
 @RequiredArgsConstructor
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @PostMapping
-    public ResponseEntity<BankAccount> registrerBankAccount (@RequestBody BankAccount request) {
-        User userFound = userService.findUserById(request.getUserId());
+    public ResponseEntity<BankAccountResponse> registerBankAccount (@RequestBody @Valid BankAccountRequest request) {
+        UserModel user = userService.findUserById(request.userId());
 
-        var bankAccount = new BankAccount();
-        BeanUtils.copyProperties(request, bankAccount);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(bankAccountService.registrerBankAccount(bankAccount));
+        BankAccount bankAccount = bankAccountService.registerBankAccount(request);
+        URI location = buildBankAccountUri(bankAccount.getId());
+        return ResponseEntity.created(location).body(BankAccountResponse.entityToResponse(bankAccount));
     }
 
     @GetMapping
-    public ResponseEntity<List<BankAccount>> getAllBankAccounts () {
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.findAllBankAccount());
+    public ResponseEntity<List<BankAccountResponse>> findAllBankAccounts () {
+        return ResponseEntity.ok(bankAccountService.findAllBankAccount());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BankAccount> getBankAccount (@PathVariable String id) {
-        BankAccount bankAccountFound = bankAccountService.findBankAccountById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
-
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccountFound);
+    public ResponseEntity<BankAccountResponse> getBankAccount (@PathVariable String id) {
+        return ResponseEntity
+                .ok(BankAccountResponse
+                        .entityToResponse(bankAccountService.findBankAccount(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BankAccount> updateBankAccount (@PathVariable String id,
-                                                       @RequestBody @Valid BankAccount request) {
-
-        BankAccount bankAccountFound = bankAccountService.findBankAccountById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
-
-        request.setId(bankAccountFound.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(bankAccountService.updateBankAccount(request));
+    public ResponseEntity<BankAccountResponse> updateBankAccount (@PathVariable String id, @RequestBody @Valid BankAccountRequest request) {
+        return ResponseEntity
+                .ok(BankAccountResponse
+                        .entityToResponse(bankAccountService.updateBankAccount(id, request)));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBankAccount (@PathVariable String id) {
-
-        BankAccount bankAccountFound = bankAccountService.findBankAccountById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Bank Account not found!"));
-
+    public void deleteUser (@PathVariable String id) {
         bankAccountService.deleteBankAccount(id);
     }
+
+    private URI buildBankAccountUri(String id) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
+    }
+
 }

@@ -1,9 +1,8 @@
 package br.dev.ezcoder.ezfinancepro.model.entity;
 
-import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequestDTO;
+import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequest;
 import br.dev.ezcoder.ezfinancepro.model.enums.PaymentMethod;
 import br.dev.ezcoder.ezfinancepro.model.enums.TransactionType;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -53,7 +52,7 @@ public class Transaction {
   @NotNull
   private PaymentMethod paymentMethod;
 
-  public Transaction(@Valid TransactionRequestDTO request) {
+  public Transaction(TransactionRequest request) {
     this.userId = request.userId();
     this.amount = request.amount();
     this.date = request.date();

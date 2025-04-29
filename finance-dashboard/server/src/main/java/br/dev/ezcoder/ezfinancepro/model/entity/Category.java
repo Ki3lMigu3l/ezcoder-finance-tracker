@@ -1,6 +1,7 @@
 package br.dev.ezcoder.ezfinancepro.model.entity;
 
-import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequestDTO;
+import br.dev.ezcoder.ezfinancepro.model.dto.request.CategoryRequest;
+import br.dev.ezcoder.ezfinancepro.model.dto.request.TransactionRequest;
 import br.dev.ezcoder.ezfinancepro.model.enums.CategoryType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,21 +33,21 @@ public class Category {
 
   private boolean isDefault;
 
-  public Category(Category category) {
-    this.userId = category.getUserId();
-    this.name = category.getName();
-    this.icon = category.getIcon();
-    this.colorHex = category.getColorHex();
-    this.type = category.getType();
-    this.isDefault = category.isDefault();
-  }
-
-  public Category(CategoryRequestDTO request) {
+  public Category(CategoryRequest request) {
     this.userId = request.userId();
     this.name = request.name();
     this.icon = request.icon();
     this.colorHex = request.colorHex();
     this.type = request.type();
     this.isDefault = request.isDefault();
+  }
+
+  public Category(TransactionRequest request) {
+    this.userId = request.userId();
+    this.name = request.category().name();
+    this.icon = request.category().icon();
+    this.colorHex = request.category().colorHex();
+    this.type = request.category().type();
+    this.isDefault = request.category().isDefault();
   }
 }

@@ -1,4 +1,4 @@
-package br.dev.ezcoder.ezfinancepro.repositories;
+package br.dev.ezcoder.ezfinancepro.repository;
 
 import br.dev.ezcoder.ezfinancepro.model.entity.BankAccount;
 import org.springframework.data.mongodb.repository.MongoRepository;

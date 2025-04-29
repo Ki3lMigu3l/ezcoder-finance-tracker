@@ -9,14 +9,14 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record TransactionRequestDTO(
+public record TransactionRequest(
         @NotBlank String userId,
         @NotNull @PositiveOrZero BigDecimal amount,
         @NotNull LocalDate date,
         String description,
         String notes,
         @NotNull TransactionType type,
-        CategoryRequestDTO category,
+        CategoryRequest category,
         boolean isRecurring,
         boolean isCreditCard,
         String cardInvoiceId,
