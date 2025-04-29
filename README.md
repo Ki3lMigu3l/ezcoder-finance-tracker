@@ -1,9 +1,10 @@
-# 📆 Ezfinance Pro - Dashboard de Finanças Pessoais
+# EzFinance Pro: dashboard de finanças pessoais 📆
 [![Java](https://img.shields.io/badge/Java-17-%23ED8B00?logo=openjdk)](https://jdk.java.net/17/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-%236DB33F?logo=spring)](https://spring.io/projects/spring-boot)
 [![MongoDB](https://img.shields.io/badge/MongoDB-%2347A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
 
-<div align="center"><h3>🎯 Objetivo do Projeto</h3></div>
+<br>
+<div align="center"><h2> 🎯 Objetivo do Projeto</h2></div>
 
 O objetivo deste projeto é desenvolver uma solução completa para o gerenciamento de finanças pessoais, oferecendo: 
 - Controle inteligente de receitas e despesas
@@ -12,8 +13,7 @@ O objetivo deste projeto é desenvolver uma solução completa para o gerenciame
 - Planejamento orçamentário com alertas personalizados
 
 <hr>
-
-<div align="center"><h3> 🚀 Stack do Projeto</h3></div>
+<div align="center"><h3> Tecnologias</h3></div>
 
 <div align="center">
   
@@ -48,7 +48,7 @@ O objetivo deste projeto é desenvolver uma solução completa para o gerenciame
  
 <hr>
 
-<div align="center"><h3>🛠️ Ferramentas</h3></div>
+<div align="center"><h3> Ferramentas</h3></div>
 <div align="center">
   
   [![My Skills](https://skillicons.dev/icons?i=idea,postman,docker,notion&perline=8)](https://skillicons.dev)
