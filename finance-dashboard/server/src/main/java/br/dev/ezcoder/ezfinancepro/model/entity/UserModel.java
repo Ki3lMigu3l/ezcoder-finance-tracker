@@ -2,6 +2,7 @@ package br.dev.ezcoder.ezfinancepro.model.entity;
 
 import br.dev.ezcoder.ezfinancepro.model.dto.request.UserCreateRequest;
 import br.dev.ezcoder.ezfinancepro.model.dto.request.UserSignupRequest;
+import br.dev.ezcoder.ezfinancepro.model.enums.RoleType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -70,5 +71,18 @@ public class UserModel {
     this.setBirthDate(request.birthDate());
     this.setProfileImageUrl(request.profileImageUrl());
     this.setCreatedAt(LocalDateTime.now());
+  }
+
+  public UserModel(String email, String encodedPass, String firstName, String lastName) {
+    this.email = email;
+    this.password = encodedPass;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  public UserModel(String userId, String email, String password) {
+    this.id = userId;
+    this.email = email;
+    this.password = password;
   }
 }
