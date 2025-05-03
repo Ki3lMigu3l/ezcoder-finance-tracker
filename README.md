@@ -1,10 +1,10 @@
-# EzFinance Pro: dashboard de finanças pessoais 📆
+# 📆 *EzFinance Pro Dashboard de finanças pessoais*
 [![Java](https://img.shields.io/badge/Java-17-%23ED8B00?logo=openjdk)](https://jdk.java.net/17/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.4-%236DB33F?logo=spring)](https://spring.io/projects/spring-boot)
 [![MongoDB](https://img.shields.io/badge/MongoDB-%2347A248?logo=mongodb&logoColor=white)](https://www.mongodb.com)
 
-<br>
-<div align="center"><h2> 🎯 Objetivo do Projeto</h2></div>
+<h2></h2>
+<div align="center"><h3> 🎯 Objetivo do Projeto</h3></div>
 
 O objetivo deste projeto é desenvolver uma solução completa para o gerenciamento de finanças pessoais, oferecendo: 
 - Controle inteligente de receitas e despesas
@@ -12,7 +12,7 @@ O objetivo deste projeto é desenvolver uma solução completa para o gerenciame
 - Relatórios customizáveis e dashboards interativos
 - Planejamento orçamentário com alertas personalizados
 
-<hr>
+<h2></h2>
 <div align="center"><h3> Tecnologias</h3></div>
 
 <div align="center">
@@ -20,7 +20,7 @@ O objetivo deste projeto é desenvolver uma solução completa para o gerenciame
   [![My Skills](https://skillicons.dev/icons?i=git,java,spring,mongodb&perline=8)](https://skillicons.dev)
 </div>
 
-<hr>
+<h2></h2>
 
 ### **Java 17**
 - **Motivo da escolha**: Versão LTS com suporte estendido até 2029
@@ -45,8 +45,8 @@ O objetivo deste projeto é desenvolver uma solução completa para o gerenciame
   - Agregações poderosas para relatórios complexos
   - Escalabilidade horizontal nativa
   - JSON nativo = perfeito para APIs REST
- 
-<hr>
+    
+<h2></h2>
 
 <div align="center"><h3> Ferramentas</h3></div>
 <div align="center">
